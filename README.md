@@ -27,5 +27,5 @@ Toxin is a Rust language boilerplate for developing a backend application. It co
 1. Clone this repository:
 
    ```shell
-   git clone https://github.com/your-repo/your-project.git
-   cd your-project
+   git clone git@github.com:bekhzod91/rust-restful-boilerplate.git
+   cd rust-restful-boilerplate
