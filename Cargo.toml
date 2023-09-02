@@ -1,0 +1,20 @@
+[package]
+name = "toxin-backend"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+axum = "0.5.16"
+log = "0.4.17"
+mongodb = { version = "2.3.0", features = ["tokio-runtime"] }
+pretty_env_logger = "0.4.0"
+serde = { version = "1.0.144", features = ["derive"] }
+tokio = { version = "1.21.1", features = ["full"] }
+tower = "0.4.13"
+futures = "0.3"
+tower-http = { version = "0.3.4", features = ["full"] }
+uuid = { version = "1.1.2", features = ["v4"]} 
+bson = "2.6.1"
+
