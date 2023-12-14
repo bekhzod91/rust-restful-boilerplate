@@ -9,6 +9,7 @@ Toxin is a Rust language boilerplate for developing a backend application. It co
 - **CRUD Operations:** You can easily perform Create, Read, Update, and Delete operations on your data.
 - **Request ID:** Toxin handles request identification for better debugging and tracing.
 - **Logging:** Comprehensive logging for monitoring and debugging your application.
+- **Authentication and Authorization** 
 - **Asynchronous Operations:** Built-in support for async/await, allowing for non-blocking and concurrent operations.
 
 
@@ -18,6 +19,7 @@ Toxin is a Rust language boilerplate for developing a backend application. It co
 
 - Rust (Version 1.63.0)
 - MongoDB (Version 7.0.0)
+- Redis
 - axum
 - tokio
 - serde

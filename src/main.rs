@@ -1,9 +1,11 @@
 extern crate pretty_env_logger;
 #[macro_use]
 extern crate log;
+extern crate redis;
 
 use axum::routing::{get, post, delete, put};
 use axum::extract::Extension;
+use axum::middleware;
 use axum::Router;
 use std::net::SocketAddr;
 use std::sync::Arc;
@@ -35,19 +37,33 @@ async fn main() {
 
     info!("Connected to mongodb.");
 
+    info!("Starting connect to redis.");
+    let redis_client = redis::Client::open("redis://127.0.0.1/").unwrap();
+    info!("Connected to redis.");
+
     // Shared state
     let shared_state = Arc::new(api::state::State {
-        db
+        db,
+        redis_client
     });
 
-    let app = Router::new()
-        .route("/", get(root))
-        .route("/ping", get(api::ping::ping))
+    let private_route = Router::new()
+        .route("/api/v1/sign-out", post(api::auth::sign_in))
         .route("/api/v1/accounts", get(api::account::account_list))
         .route("/api/v1/accounts", post(api::account::account_create))
         .route("/api/v1/accounts/:id", get(api::account::account_detail))        
         .route("/api/v1/accounts/:id", delete(api::account::account_remove))
         .route("/api/v1/accounts/:id", put(api::account::account_update))
+        .route_layer(middleware::from_fn(api::middleware::auth));
+
+    let public_route: Router = Router::new()
+        .route("/", get(root))
+        .route("/ping", get(api::ping::ping))
+        .route("/api/v1/sign-in", post(api::auth::sign_in));
+
+    let app = Router::new()
+        .merge(private_route)
+        .merge(public_route)
         .layer(
             ServiceBuilder::new()
                 .set_x_request_id(MakeRequestUuid)
